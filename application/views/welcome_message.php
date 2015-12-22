@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/css/bootstrap.css"); ?>" />
     <script src="<?php echo base_url("assets/js/bootstrap.js"); ?>" type="text/javascript">  </script>  
     <script src="<?php echo base_url("assets/js/jquery.validate.js"); ?>" type="text/javascript">  </script>    
-    <script src="<?php echo base_url("assets/js/jquery-2.1.4.min.js"); ?>" type="text/javascript">  </script>    
-    
-	
+    <script src="<?php echo base_url("assets/js/jquery-2.1.4.min.js"); ?>" type="text/javascript">  </script>        	
 </head>
 <body>
 
