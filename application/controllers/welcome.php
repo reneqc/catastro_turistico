@@ -19,8 +19,11 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+        $datos['nombre'] = 'juan';
         $this->load->helper('url');
+        $this->load->view('a1',$datos);
 		$this->load->view('welcome_message');
+        $this->load->view('a2');
 	}
 }
 
