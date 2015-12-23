@@ -2,30 +2,20 @@
 
 class Welcome extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
 	public function index()
 	{
         $datos['nombre'] = 'juan';
         $this->load->helper('url');
+<<<<<<< HEAD
         $this->load->view('a1',$datos);
 		$this->load->view('welcome_message');
         $this->load->view('a2');
+=======
+        $this->load->view('encabezado');
+		$this->load->view('welcome_message');
+        $this->load->view('pie');
+>>>>>>> e53336d2834be01ef2b509b7c5a29586f78d8027
 	}
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+?>
