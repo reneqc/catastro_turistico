@@ -11,7 +11,15 @@
     <div class="col-md-4"> </div>
     <div class="col-md-4 well">
         <h4 class="text-center">ACCESO AL SISTEMA</h4>
-        
+        <?php
+        if($this -> session -> flashdata("errorLogin")){
+            echo '<div class="alert alert-danger">' . $this -> session -> flashdata("errorLogin").'</div>';
+        }
+        ?>
+            
+                
+                
+               
             <?php
             
             $username=array(

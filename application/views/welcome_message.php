@@ -1,22 +1,55 @@
    
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>      
-   
-       
-    <?php     
-        if($this->session->flashdata('eliminado')){
-            echo '<div class="alert alert-danger">'.$this->session->flashdata('eliminado').'</div>'; 
+
+    <?php  
+
+        if($this->session->flashdata('bienvenida')){
+           
+      ?>
+                      
+        <script>
+
+            $(document).ready(function() {
+
+              $('#myModal').modal({
+                show: 'true'
+                });     
+            });
+
+        </script>         
+
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bienvenido!</h4>
+              </div>
+              <div class="modal-body">
+                <p>
+                   <?php  echo '<h2 class="text-center">'.$this->session->flashdata('bienvenida').'</h2>'; ?>
+                  <?php  echo '<h2 class="text-center">'.$this->session->userdata('username').'</h2>'; ?>
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+            
+            
+            
+     <?php         
         }
     ?>
+
            
-      
-   <br><br>
-   
-   
-   
+ 
     <!-- Header -->
     <header id="top" class="header">
         <div class="text-vertical-center">

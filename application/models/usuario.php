@@ -2,7 +2,7 @@
 class Usuario extends CI_Model{
     function __construct (){
         parent :: __construct();
-        $this -> load -> database();
+        
         
     }
     function crearUsuario($data){
@@ -23,7 +23,7 @@ class Usuario extends CI_Model{
         $query = $this -> db -> get_where("usuario", $data);
         if($query -> num_rows() > 0)
         {
-            return $query;
+            return $query -> row();
         }else{
             return false;
         }

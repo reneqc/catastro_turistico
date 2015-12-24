@@ -3,8 +3,7 @@ class Usuarios extends CI_Controller {
 
     function __construct(){
       parent::__construct();      
-      $this->load->helper('form');
-      $this->load->helper('url');
+    
       $this->load->model('usuario');
    }  
     
@@ -32,11 +31,22 @@ class Usuarios extends CI_Controller {
         
         $resultado = $this -> usuario -> consultaUsuario($data);
         if($resultado){
-          redirect("/");
+            $this -> session -> set_flashdata('bienvenida','Usuario encontrado, bienvenido!');
+            $newData = array(
+                'username' => $resultado -> USERNAME, 
+                'descripcion' => $resultado -> DES_USU
+            );
+            $this -> session -> set_userdata($newData);
+          redirect("/establecimientos");
         }else
         {
+            $this -> session -> set_flashdata('errorLogin','Usuario o contraseña incorrectos');
             $this -> login();
         }
+    }
+    public function cerrarSesion(){
+        $this -> session -> sess_destroy();
+        $this -> login();
     }
 }
 
