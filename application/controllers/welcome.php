@@ -3,15 +3,18 @@
 class Welcome extends CI_Controller {
 
 	public function index()
-	{
-        $datos['nombre'] = 'juan';
+	{        
+        if(rand(0,1) == 1){
+            $this->session->set_flashdata('eliminado', 'Eliminado!');
+        }
+        
         $this->load->helper('url');
-
         $this->load->view('encabezado');
 		$this->load->view('welcome_message');
         $this->load->view('pie');
 
 	}
+
 }
 
 ?>

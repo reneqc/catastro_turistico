@@ -1,4 +1,22 @@
    
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>      
+   
+       
+    <?php     
+        if($this->session->flashdata('eliminado')){
+            echo '<div class="alert alert-danger">'.$this->session->flashdata('eliminado').'</div>'; 
+        }
+    ?>
+           
+      
+   <br><br>
+   
+   
+   
     <!-- Header -->
     <header id="top" class="header">
         <div class="text-vertical-center">
