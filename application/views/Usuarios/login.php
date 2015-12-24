@@ -31,7 +31,8 @@
         
             $formulario=array(
                     'id'=>'formulario',
-                    'class'=>'form-horizontal'
+                    'class'=>'form-horizontal',
+                    
             );
         
             
@@ -43,26 +44,26 @@
     
          ?>
          
-         <?= form_open('/usuarios/validarDatos',$formulario) ?> 
+         <?php echo form_open('/usuarios/validarDatos',$formulario) ?> 
          
                
-        <?= form_label('Usuario:','username');?>          
-        <?= form_input($username) ?>
+        <?php echo form_label('Usuario:','username');?>          
+        <?php echo form_input($username) ?>
        
         <br>
         <br>
 
-            <?= form_label('Contraseña:','password');?> 
-            <?= form_input($password) ?>
+            <?php echo form_label('Contraseña:','password');?> 
+            <?php echo form_input($password) ?>
 
         <br>
         <center>
-        <?= form_submit($boton); ?>
+        <?php echo form_submit($boton); ?>
         </center>
-        <?= form_close(); ?>
+        <?php echo form_close(); ?>
         
     </div>
-    <div class="col-md-3"> </div>
+    <div class="col-md-4"> </div>
     
     <br>
     <br>

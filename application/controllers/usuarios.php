@@ -1,17 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class Usuarios extends CI_Controller {
 
     function __construct(){
       parent::__construct();      
       $this->load->helper('form');
       $this->load->helper('url');
-      //$this->load->model('empleado');
+      $this->load->model('usuario');
    }  
     
 
 	public function index()
-	{        
+	{
+        $data['usuarios'] = $this -> usuario -> consultaUsuarios();
+        $this->load->view('encabezado');
+		$this->load->view('/usuarios/index',$data);
+        $this->load->view('pie');        
 		
 	}
     
@@ -24,10 +27,16 @@ class Usuarios extends CI_Controller {
     public function validarDatos(){        
         $data=array(
         'username'=> $this->input->post('username'),
-        'password'=> $this->input->post('password')
+        'password'=> MD5($this->input->post('password'))
         );
         
-        echo $data['username'];
+        $resultado = $this -> usuario -> consultaUsuario($data);
+        if($resultado){
+          redirect("/");
+        }else
+        {
+            $this -> login();
+        }
     }
 }
 
