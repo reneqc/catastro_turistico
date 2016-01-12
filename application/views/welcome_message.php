@@ -1,8 +1,4 @@
-   
-
-    
-
-           
+     
  
     <!-- Header -->
     <header id="top" class="header">
@@ -15,7 +11,12 @@
             </div>
           </center>
             <br>
-            <a href="<?php echo site_url("/usuarios/login"); ?>" class="btn btn-dark btn-lg"> Ingresar</a>
+            
+             <?php if( !($this->session->userdata('username'))) {   ?>                   
+               <a href="<?php echo site_url("/usuarios/login"); ?>" class="btn btn-dark btn-lg"> Ingresar</a>
+            <?php  } ?>
+           
+           
         </div>
     </header>
 

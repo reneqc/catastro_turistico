@@ -126,7 +126,11 @@ hr.small {
     color: #fff;
     background: none;
 }
-
+@-moz-document domain(support.mozilla.org){
+textarea {
+     
+	resize: none
+}}
 #menu-toggle {
     z-index: 1;
     position: fixed;

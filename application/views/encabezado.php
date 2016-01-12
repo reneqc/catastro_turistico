@@ -7,7 +7,11 @@
     <script src="<?php echo base_url("assets/js/jquery-2.1.4.min.js"); ?>" type="text/javascript">  </script>   
     <script src="<?php echo base_url("assets/js/bootstrap.js"); ?>" type="text/javascript">  </script>  
     <script src="<?php echo base_url("assets/js/jquery.validate.js"); ?>" type="text/javascript">  </script>        
+    <script src="<?php echo base_url("assets/js/funciones.js"); ?>" type="text/javascript">  </script>        
+    <script src="<?php echo base_url("assets/js/validaciones_adicionales.js"); ?>" type="text/javascript">  </script>        
+    <script src="<?php echo base_url("assets/js/validaciones_adicionales1.js"); ?>" type="text/javascript">  </script>        
     <link href="<?php echo base_url("assets/css/stylish-portfolio.css"); ?>"  rel="stylesheet">  
+    <link href="<?php echo base_url("assets/css/estilos_validate.css"); ?>"  rel="stylesheet">  
     <link href="<?php echo base_url("assets/font-awesome/css/font-awesome.min.css"); ?>" rel="stylesheet" type="text/css">  	
 </head>
 <body>
@@ -45,17 +49,24 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php  echo $this->session->userdata('username'); ?> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="<?php echo site_url('/usuarios/cerrarSesion')?>">SALIR</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
+       <?php if($this->session->userdata('username')) {   ?>        
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php  echo $this->session->userdata('username'); ?> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<?php echo site_url('/usuarios/cerrarSesion')?>">SALIR</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </li>
+        
+        <?php  } else { ?>
+        
+            <li><a href="<?php echo site_url('/usuarios/login'); ?>">Ingresar</a></li>
+        
+        <?php  } ?>
+        
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
