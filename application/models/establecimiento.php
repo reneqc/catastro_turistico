@@ -41,9 +41,26 @@ class Establecimiento extends CI_Model{
             return $query;
         }else{
             return false;
-        }
-            
+        }            
     }
+    
+    function buscarEstablecimientosActividad($busqueda){
+        $this->db->join('actividad','establecimiento.id_act = actividad.id_act');
+        //$array = array('nombre_est'=>$busqueda, 'telefono_est'=>$busqueda);
+        $this->db->or_like('telefono_est',$busqueda);
+        $this->db->or_like('nombre_est',$busqueda);
+        
+        $query = $this -> db -> get("establecimiento");
+        
+        if($query -> num_rows() > 0)
+        {
+            return $query;
+        }else{
+            return false;
+        }            
+    }
+    
+    
     
     function consultaRuc($ruc){
         $data = array("ruc_est"=>$ruc);

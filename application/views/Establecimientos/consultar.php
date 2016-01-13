@@ -2,10 +2,10 @@
 
 <center><legend>ESTABLECIMIENTOS REGISTRADOS</legend></center>
 
-<form action="">
+<form action="<?php site_url("/establecimientos/consultar");?>" method="post">
     
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Escriba su búsqueda..." autofocus>
+      <input type="text" name="busqueda" class="form-control" value="<?php echo $busqueda; ?>" placeholder="Escriba su búsqueda..." autofocus>
       <span class="input-group-btn">
         <button class="btn btn-default" type="submit"> <i class="glyphicon glyphicon-search"> </i> </button>
       </span>
@@ -20,12 +20,13 @@
         <table class="table table-hover table-striped">
             
             <tr>
-                <th class="alert-info">Registro</th>
-                <th class="alert-info">Fecha</th>
-                <th class="alert-info">Nombre</th>
-                <th class="alert-info">Telefono</th>
-                <th class="alert-info">Actividad</th>
-                <th class="alert-info">Opciones</th>
+                <th class="alert-success">Registro</th>
+                <th class="alert-success">Fecha</th>
+                <th class="alert-success">Nombre</th>
+                <th class="alert-success">Telefono</th>
+                <th class="alert-success">Actividad</th>
+                <th class="alert-success">Tecnología</th>
+                <th class="alert-success">Servicios</th>
             </tr>
 
           <?php   foreach($establecimientos->result() as $establecimiento){ ?>
@@ -37,7 +38,10 @@
                  <td><?php echo $establecimiento->TELEFONO_EST; ?></td>
                  <td><?php echo $establecimiento->NOMBRE_ACT; ?></td>
                  <td>
-                    <a href="" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> 
+                    <a href="<?php echo site_url("/establecimientos/tecnologia/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-info"><i class="glyphicon glyphicon-phone-alt"></i></a> 
+                 </td>
+                 <td>
+                    <a href="" class="btn btn-success"><i class="glyphicon glyphicon-cutlery"></i></a> 
                  </td>
              </tr>
 
@@ -52,7 +56,7 @@
 
     <div class="alert alert-danger">
         
-        <i class="glyphicon glyphicon-remove"> </i> <b> No se encontraron establecimientos registrados</b>
+        <i class="glyphicon glyphicon-remove"> </i> <b> No se encontraron establecimientos</b>
         
     </div>
     <br><br><br><br><br><br><br><br><br>

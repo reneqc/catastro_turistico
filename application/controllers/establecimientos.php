@@ -5,6 +5,8 @@ class Establecimientos  extends CI_Controller {
       
     $this->load->model('actividad');
     $this->load->model('establecimiento');
+    $this->load->model('equipo');
+    $this->load->model('establecimiento_equipo');
    }  
     public function index(){
         if($this->session->userdata('username'))
@@ -88,12 +90,17 @@ class Establecimientos  extends CI_Controller {
     }
     
     
-    public function consultar(){
-        
-        
+    public function consultar(){                 
+                 
+             
          if($this->session->userdata('username'))
-        {   
-             $data['establecimientos']=$this -> establecimiento -> consultaEstablecimientosActividad();
+        {                
+             $data['busqueda'] = $this->input->post("busqueda");
+             if($data['busqueda']==""){
+                 $data['establecimientos']=$this -> establecimiento -> consultaEstablecimientosActividad();
+             }else{
+                 $data['establecimientos']=$this -> establecimiento -> buscarEstablecimientosActividad($data['busqueda']);
+             }            
              $this->load->view('encabezado');
              $this->load->view('/establecimientos/menuLateral');
              $this->load->view('/establecimientos/consultar',$data);
@@ -102,6 +109,31 @@ class Establecimientos  extends CI_Controller {
          redirect("/usuarios/login");   
         }
         
+    }
+    public function tecnologia($establecimiento){
+        if($this->session->userdata('username'))
+        {                
+             $data['equipos'] = $this->equipo ->consultaEquipos();  
+             $data['establecimiento'] = $establecimiento;
+             $data['equipos2']= $this->establecimiento_equipo->consultarPorEstablecimiento($establecimiento);
+             $this->load->view('encabezado');
+             $this->load->view('/establecimientos/menuLateral');
+             $this->load->view('/establecimientos/tecnologia',$data);
+             $this->load->view('pie');
+        }else{
+         redirect("/usuarios/login");   
+        }
+    }
+    public function guardarEstablecimientoEquipo(){
+        $data = array(
+            "id_est"=>$this->input->post("id_est"),
+            "id_equi"=>$this->input->post("id_equi"),
+            "cantidad_ee"=>$this->input->post("cantidad_ee")
+        );
+      $this->establecimiento_equipo->grabarEstablecimientoEquipo($data);
+        $this -> session -> set_flashdata('equipoGuardado','Equipo Guardado Exitosamente!');
+        redirect('/establecimientos/tecnologia/'.$data['id_est']);
+
     }
 }
 ?>
