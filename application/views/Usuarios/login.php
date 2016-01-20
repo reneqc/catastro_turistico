@@ -13,7 +13,8 @@
         <h4 class="text-center">ACCESO AL SISTEMA</h4>
         <?php
         if($this -> session -> flashdata("errorLogin")){
-            echo '<div class="alert alert-danger">' . $this -> session -> flashdata("errorLogin").'</div>';
+             
+			 mostrarModal('Acceso denegado.',$this -> session -> flashdata("errorLogin"),'','btn-danger');
         }
         ?>
             

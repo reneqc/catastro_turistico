@@ -6,7 +6,14 @@ class Establecimientos  extends CI_Controller {
     $this->load->model('actividad');
     $this->load->model('establecimiento');
     $this->load->model('equipo');
+    $this->load->model('maquina');
+	$this->load->model('habitacion');
+	$this->load->model('cama');
     $this->load->model('establecimiento_equipo');
+    $this->load->model('establecimiento_maquina');
+	$this->load->model('establecimiento_habitacion');
+	$this->load->model('cama_habitacion');
+	
    }  
     public function index(){
         if($this->session->userdata('username'))
@@ -88,6 +95,22 @@ class Establecimientos  extends CI_Controller {
 
         
     }
+	    public function guardarCamaHabitacion(){
+		$id_est = $this->input->post("id_est");
+        $data = array(
+            "id_cam" => $this->input->post("id_cam"),
+            "id_hab" => $this->input->post("id_hab"),
+            "numero" => $this->input->post("numero"),
+        );
+        
+        $this->cama_habitacion->grabarCama($data);
+        
+        $this -> session -> set_flashdata('mensaje','Cama Guardada Exitosamente!');
+        
+        redirect('/establecimientos/habitaciones/'.$id_est);
+
+        
+    }
     
     
     public function consultar(){                 
@@ -114,11 +137,34 @@ class Establecimientos  extends CI_Controller {
         if($this->session->userdata('username'))
         {                
              $data['equipos'] = $this->equipo ->consultaEquipos();  
+             $data['maquinas'] = $this->maquina ->consultaMaquinas(); 
              $data['establecimiento'] = $establecimiento;
              $data['equipos2']= $this->establecimiento_equipo->consultarPorEstablecimiento($establecimiento);
+             $data['maquinas2']= $this->establecimiento_maquina->consultarPorEstablecimiento($establecimiento);
              $this->load->view('encabezado');
              $this->load->view('/establecimientos/menuLateral');
              $this->load->view('/establecimientos/tecnologia',$data);
+             $this->load->view('pie');
+        }else{
+         redirect("/usuarios/login");   
+        }
+    }
+	
+    public function habitaciones($establecimiento){
+        if($this->session->userdata('username'))
+        {                
+         /*    $data['equipos'] = $this->equipo ->consultaEquipos();  
+             $data['maquinas'] = $this->maquina ->consultaMaquinas(); 
+             $data['establecimiento'] = $establecimiento;
+             $data['equipos2']= $this->establecimiento_equipo->consultarPorEstablecimiento($establecimiento);
+             $data['maquinas2']= $this->establecimiento_maquina->consultarPorEstablecimiento($establecimiento);*/
+			 $data['habitaciones']= $this->establecimiento_habitacion->consultarPorEstablecimiento($establecimiento);
+             $data['establecimiento'] = $establecimiento;
+			 $data['camas']= $this->cama->consultaCamas();
+			 $data['cama_habitacion']= $this->cama_habitacion->consultarCamaHabitacion(13);
+             $this->load->view('encabezado');
+             $this->load->view('/establecimientos/menuLateral');
+             $this->load->view('/establecimientos/habitaciones',$data);
              $this->load->view('pie');
         }else{
          redirect("/usuarios/login");   
@@ -130,10 +176,96 @@ class Establecimientos  extends CI_Controller {
             "id_equi"=>$this->input->post("id_equi"),
             "cantidad_ee"=>$this->input->post("cantidad_ee")
         );
-      $this->establecimiento_equipo->grabarEstablecimientoEquipo($data);
-        $this -> session -> set_flashdata('equipoGuardado','Equipo Guardado Exitosamente!');
+        $consulta = $this->establecimiento_equipo->consultarExistencia($data['id_equi'],$data['id_est']);
+        if($consulta)
+        {
+            $this->establecimiento_equipo->actualizarExistencia($consulta->ID_EE,$data['cantidad_ee']);
+            $this -> session -> set_flashdata('mensaje','Equipo Actualizado Exitosamente!');
+        }else{
+            $this->establecimiento_equipo->grabarEstablecimientoEquipo($data);
+            $this -> session -> set_flashdata('mensaje','Equipo Guardado Exitosamente!');
+        }
+      
         redirect('/establecimientos/tecnologia/'.$data['id_est']);
 
     }
+    public function eliminarEstablecimientoEquipo($id_ee,$id_est){
+        $this->establecimiento_equipo->eliminarEquipo($id_ee);
+        $this -> session -> set_flashdata('mensaje','Equipo Eliminado Exitosamente!');
+        redirect('/establecimientos/tecnologia/'.$id_est);
+            
+    }
+    public function eliminarEstablecimientoHabitacion($id_eh,$id_hab,$id_est){
+		$this->establecimiento_habitacion->eliminarEstablecimientoHabitacion($id_eh);
+        $this->habitacion->eliminarHabitacion($id_hab);
+        $this -> session -> set_flashdata('mensaje','Habitación Eliminada Exitosamente!');
+        redirect('/establecimientos/habitaciones/'.$id_est);
+            
+    }
+    //Maquina
+        public function guardarEstablecimientoMaquina(){
+        $data = array(
+            "id_est"=>$this->input->post("id_est"),
+            "id_maqui"=>$this->input->post("id_maqui"),
+            "cantidad_em"=>$this->input->post("cantidad_em")
+        );
+        $consulta = $this->establecimiento_maquina->consultarExistencia($data['id_maqui'],$data['id_est']);
+        if($consulta)
+        {
+            $this->establecimiento_maquina->actualizarExistencia($consulta->ID_EM,$data['cantidad_em']);
+            $this -> session -> set_flashdata('mensaje','Maquina Actualizada Exitosamente!');
+        }else{
+            $this->establecimiento_maquina->grabarEstablecimientoMaquina($data);
+            $this -> session -> set_flashdata('mensaje','Maquina Guardada Exitosamente!');
+        }
+      
+        redirect('/establecimientos/tecnologia/'.$data['id_est']);
+
+    }
+    public function eliminarEstablecimientoMaquina($id_em,$id_est){
+        $this->establecimiento_maquina->eliminarMaquina($id_em);
+        $this -> session -> set_flashdata('mensaje','Maquina Eliminada Exitosamente!');
+        redirect('/establecimientos/tecnologia/'.$id_est);
+            
+    }
+    //Habitaciones
+    public function guardarHabitacion(){	
+        
+        if($this->input->post("banio")=="banioPrivado_hab"){
+            $auxPrivado = 1;
+            $auxCompartido = 0;
+        }else
+        {
+            $auxPrivado = 0;
+            $auxCompartido = 1;
+        }
+        
+        $data = array(
+            "descripcion_hab"=> ($this->input->post("descripcion_hab")),
+            "banioPrivado_hab" => $auxPrivado,
+            "banioCompartido_hab" => $auxCompartido,
+            "television_hab"=>$this->input->post("television_hab"),
+            "nevera_hab"=>$this->input->post("nevera_hab"),
+            "aire_hab"=>$this->input->post("aire_hab"),
+            "telefono_hab"=>$this->input->post("telefono_hab"),
+            "secadora_hab"=>$this->input->post("secadora_hab"),
+            "musica_hab"=>$this->input->post("musica_hab")
+        );
+		$id_habitacion = $this->habitacion->guardarHabitacion($data);
+		
+        $id_establecimiento = $this->input->post("id_establecimiento");
+		$this -> establecimiento_habitacion -> grabarEstablecimientoHabitacion($id_establecimiento,$id_habitacion);
+		$this -> session -> set_flashdata('mensaje','Habitación Guardada Exitosamente!');
+        redirect('/establecimientos/habitaciones/'.$id_establecimiento);
+    }
+	public function eliminarCamaHabitacion($id_cam,$id_hab){
+		$this->cama_habitacion->eliminarCamaHabitacion($id_cam,$id_hab);
+        //$this->habitacion->eliminarHabitacion($id_hab);
+        $this -> session -> set_flashdata('mensaje','Cama Eliminada Exitosamente!');
+        redirect('/establecimientos/habitaciones/'.$id_est);
+		
+            
+    }
+    
 }
 ?>

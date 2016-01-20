@@ -23,8 +23,8 @@ jQuery.validator.addMethod('filesize', function(value, element, param) {
 
 
 jQuery.validator.addMethod('positivo', function(value, element, param) {
-    return value>=0;
-},"El valor ingresado no puede ser negativo");
+    return value>0;
+},"Valor incorrecto");
 
 
 

@@ -20,12 +20,12 @@
   <label class="col-md-4 control-label" for="latitud_est">Latitud:</label>  
   <div class="col-md-3">
   <input id="latitud_est" name="latitud_est" type="text" placeholder="Ingrese latitud" class="form-control input-md">
-  <span class="help-block">Ej: -0.5</span>  
+  <span class="help-block">Ej: 0.5</span>  
   </div>
    <label class="col-md-2 control-label" for="longitud_est">Longitud:</label>  
   <div class="col-md-3">
   <input id="longitud_est" name="longitud_est" type="text" placeholder="Ingrese longitud" class="form-control input-md">
-  <span class="help-block">Ej: -78</span>  
+  <span class="help-block">Ej: 7.8</span>  
   </div>
 </div>
 
@@ -35,7 +35,7 @@
   <label class="col-md-4 control-label" for="nombre_est">Nombre Establecimiento:</label>  
   <div class="col-md-8">
   <input id="nombre_est" name="nombre_est" type="text" placeholder="Ingrese el nombre" class="form-control input-md">
-  <span class="help-block">Ej: Establecimiento</span>  
+  <span class="help-block">Ej: Nombre Establecimiento</span>  
   </div>
 </div>
 
@@ -44,7 +44,7 @@
   <label class="col-md-4 control-label" for="ruc_est">Ruc:</label>  
   <div class="col-md-3">
   <input id="ruc_est" name="ruc_est" type="text" placeholder="Ingrese número de ruc" class="form-control input-md">
-  <span class="help-block">Ej: 1717171717172</span>  
+  <span class="help-block">Ej: 1717171717001</span>  
   </div>
 </div>
 
@@ -375,11 +375,3 @@
       });
     $("#tipo_organizacion").prop("hidden",true);
 </script>
-
-
-
-
-
-
-
-

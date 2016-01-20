@@ -27,13 +27,27 @@ class Establecimiento_equipo extends CI_Model{
         $query = $this->db->get_where("establecimiento_equipo",array('establecimiento_equipo.id_est'=>$id_est,'establecimiento_equipo.id_equi'=>$id_equi));
     if($query -> num_rows() > 0)
         {
-            return $query;
+            return $query -> row();
         }else{
             return false;
         } 
     
     }
-    functio actualizarExistencia($id_ee,$cantidad)
-    
+    function actualizarExistencia($id_ee,$cantidad)
+    {
+        $cantidad_tot = $this->consultarCantidad($id_ee)+ $cantidad;
+        
+        $data = array("cantidad_ee" => $cantidad_tot);
+        $this->db->where("id_ee",$id_ee);
+        $this->db->update("establecimiento_equipo",$data);
+    }
+    function consultarCantidad($id_ee){
+        $query=$this->db->get_where("establecimiento_equipo",array("id_ee"=>$id_ee));        
+        $resultado = $query->row(); 
+        return $resultado->CANTIDAD_EE;
+    }
+    function eliminarEquipo($id_ee){
+        $query=$this->db->delete("establecimiento_equipo",array("id_ee"=>$id_ee));        
+    }
     
 }
