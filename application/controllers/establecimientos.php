@@ -9,7 +9,9 @@ class Establecimientos  extends CI_Controller {
     $this->load->model('maquina');
 	$this->load->model('habitacion');
 	$this->load->model('cama');
+	$this->load->model('servicio');
     $this->load->model('establecimiento_equipo');
+	$this->load->model('establecimiento_servicio');
     $this->load->model('establecimiento_maquina');
 	$this->load->model('establecimiento_habitacion');
 	$this->load->model('cama_habitacion');
@@ -43,7 +45,17 @@ class Establecimientos  extends CI_Controller {
          redirect("/usuarios/login");   
         }
     }
-    
+    public function consultarCamas()
+	{
+		$id = $this->input->post("id_hab");
+		
+		$resultado= $this->cama_habitacion->consultarCamaHabitacion($id);
+		
+		if($resultado){
+			echo json_encode($resultado->result());
+		}else
+		{}
+	}
     public function validarRuc(){
         $ruc = $this->input->post("ruc_est");
         if(array_key_exists("ruc_est",$_POST))
@@ -149,6 +161,24 @@ class Establecimientos  extends CI_Controller {
          redirect("/usuarios/login");   
         }
     }
+	public function servicios($establecimiento){
+        if($this->session->userdata('username'))
+        {                
+//             $data['equipos'] = $this->equipo ->consultaEquipos();  
+//             $data['maquinas'] = $this->maquina ->consultaMaquinas(); 
+//             $data['establecimiento'] = $establecimiento;
+//             $data['equipos2']= $this->establecimiento_equipo->consultarPorEstablecimiento($establecimiento);
+			 $data['servicios1']= $this->establecimiento_servicio->consultarPorEstablecimiento($establecimiento);
+             $data['servicios']= $this->servicio->consultaServicios();
+			 $data['establecimiento'] = $establecimiento;
+             $this->load->view('encabezado');
+             $this->load->view('/establecimientos/menuLateral');
+             $this->load->view('/establecimientos/servicios',$data);
+             $this->load->view('pie');
+        }else{
+         redirect("/usuarios/login");   
+        }
+    }
 	
     public function habitaciones($establecimiento){
         if($this->session->userdata('username'))
@@ -161,7 +191,7 @@ class Establecimientos  extends CI_Controller {
 			 $data['habitaciones']= $this->establecimiento_habitacion->consultarPorEstablecimiento($establecimiento);
              $data['establecimiento'] = $establecimiento;
 			 $data['camas']= $this->cama->consultaCamas();
-			 $data['cama_habitacion']= $this->cama_habitacion->consultarCamaHabitacion(13);
+			 
              $this->load->view('encabezado');
              $this->load->view('/establecimientos/menuLateral');
              $this->load->view('/establecimientos/habitaciones',$data);
@@ -170,6 +200,33 @@ class Establecimientos  extends CI_Controller {
          redirect("/usuarios/login");   
         }
     }
+	public function eliminarServicio($id_es,$id_est)
+	{
+		$this->establecimiento_servicio->eliminarServicio($id_es);
+		$this -> session -> set_flashdata('mensaje','Servicio Eliminado Exitosamente!');	
+		redirect('/establecimientos/servicios/'.$id_est);
+	}
+	public function guardarServicios()
+	{
+		
+		$data = array(
+            "id_serv"=>$this->input->post("id_serv"),
+            "mesas_es"=>$this->input->post("mesas_es"),
+			"plazas_es"=>$this->input->post("plazas_es"),
+			"banios_es"=>$this->input->post("banios_es"),
+			"id_est"=>$this->input->post("id_est")
+        );
+		$consulta = $this->establecimiento_servicio->consultarExistencia($data['id_serv'],$data['id_est']);
+		if($consulta){
+			$this -> establecimiento_servicio->actualizarExistencia($consulta->ID_ES,$data);
+			$this -> session -> set_flashdata('mensaje','Servicio Actualizado Exitosamente!');
+		}else{
+			$this -> establecimiento_servicio->grabarEstablecimientoServicio($data);
+			$this -> session -> set_flashdata('mensaje','Servicio Guardado Exitosamente!');	
+		}
+		
+		redirect('/establecimientos/servicios/'.$data['id_est']);
+	}
     public function guardarEstablecimientoEquipo(){
         $data = array(
             "id_est"=>$this->input->post("id_est"),
@@ -178,7 +235,7 @@ class Establecimientos  extends CI_Controller {
         );
         $consulta = $this->establecimiento_equipo->consultarExistencia($data['id_equi'],$data['id_est']);
         if($consulta)
-        {
+        { 
             $this->establecimiento_equipo->actualizarExistencia($consulta->ID_EE,$data['cantidad_ee']);
             $this -> session -> set_flashdata('mensaje','Equipo Actualizado Exitosamente!');
         }else{
@@ -189,6 +246,7 @@ class Establecimientos  extends CI_Controller {
         redirect('/establecimientos/tecnologia/'.$data['id_est']);
 
     }
+	
     public function eliminarEstablecimientoEquipo($id_ee,$id_est){
         $this->establecimiento_equipo->eliminarEquipo($id_ee);
         $this -> session -> set_flashdata('mensaje','Equipo Eliminado Exitosamente!');
@@ -258,8 +316,10 @@ class Establecimientos  extends CI_Controller {
 		$this -> session -> set_flashdata('mensaje','Habitación Guardada Exitosamente!');
         redirect('/establecimientos/habitaciones/'.$id_establecimiento);
     }
-	public function eliminarCamaHabitacion($id_cam,$id_hab){
-		$this->cama_habitacion->eliminarCamaHabitacion($id_cam,$id_hab);
+	
+	public function eliminarCamaHabitacion($id_est,$id_ch){
+		$this->cama_habitacion->eliminarCamaHabitacion($id_ch);
+		//$this->cama->eliminarCama($id_cam);
         //$this->habitacion->eliminarHabitacion($id_hab);
         $this -> session -> set_flashdata('mensaje','Cama Eliminada Exitosamente!');
         redirect('/establecimientos/habitaciones/'.$id_est);

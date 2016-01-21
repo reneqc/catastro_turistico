@@ -16,6 +16,7 @@ class Cama extends CI_Model{
         }
             
     }
+	
     
     
 }

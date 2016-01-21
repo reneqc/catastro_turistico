@@ -1,5 +1,9 @@
 <div class="col-md-9">
-<legend><center>TECNOLOGÍA DISPONIBLE</center></legend> 
+<div class="row">
+	<div class="col-md-12">
+		<legend><center>TECNOLOGÍA DISPONIBLE <a href="<?php echo site_url('/establecimientos/consultar');?>" class="btn btn-info btn-sm pull-right"> <i class="glyphicon glyphicon-arrow-left"> </i> <b>Volver</b></a> </center>  </legend> 
+	</div>
+</div>
 <div class="col-md-6">
    <div class="row">       
         <form action="<?php echo site_url('/establecimientos/guardarEstablecimientoEquipo');?>" method="POST" id="form2">
@@ -7,7 +11,7 @@
 
         
         <table class="table">
-           <tr>
+           <tr class="alert-info">
                <td class="text-center" colspan="3"><b>EQUIPOS DISPONIBLES</b></td>
            </tr>
             <tr>
@@ -32,9 +36,9 @@
             <?php if($equipos2){?>
             <table class="table table-hover table-striped table-bordered">
                 <tr>
-                    <th class="alert-success text-center" >NOMBRE EQUIPO</th>
-                    <th class="alert-success text-center" >CANTIDAD</th>
-                    <th class="alert-success text-center" >ELIMINAR</th>
+                    <th class="alert-info text-center" >NOMBRE EQUIPO</th>
+                    <th class="alert-info text-center" >CANTIDAD</th>
+                    <th class="alert-info text-center" >ELIMINAR</th>
 
                 </tr>
 
@@ -71,7 +75,7 @@
 
         
         <table class="table">
-           <tr>
+           <tr class="alert-warning">
                <td class="text-center" colspan="3"><b>MAQUINAS DISPONIBLES</b></td>
            </tr>
             <tr>
@@ -83,7 +87,7 @@
             <?php  }    ?>
         </select></td>
                 <td><input type="text" name="cantidad_em" id="cantidad_em" class="form-control" placeholder="Cantidad"></td>
-                <td><button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></button></td>
+                <td><button class="btn btn-warning"><i class="glyphicon glyphicon-plus"></i></button></td>
             </tr>
         </table>
         </form>        
@@ -96,9 +100,9 @@
             <?php if($maquinas2){?>
             <table class="table table-hover table-striped table-bordered">
                 <tr>
-                    <th class="alert-success text-center" >NOMBRE MAQUINA</th>
-                    <th class="alert-success text-center" >CANTIDAD</th>
-                    <th class="alert-success text-center" >ELIMINAR</th>
+                    <th class="alert-warning text-center" >NOMBRE MAQUINA</th>
+                    <th class="alert-warning text-center" >CANTIDAD</th>
+                    <th class="alert-warning text-center" >ELIMINAR</th>
 
                 </tr>
 
@@ -125,6 +129,7 @@
         </div>  <!-- col-md-12 -->
     </div>  <!-- row -->
 </div> <!-- col-md-6 -->
+</div>
 </div>
 </div>
 

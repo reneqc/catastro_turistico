@@ -1,19 +1,21 @@
 <div class="col-md-9">
-    <legend><center>HABITACIONES</center></legend>
+   <div class="row">
+    <legend><center>HABITACIONES <a href="<?php echo site_url('/establecimientos/consultar');?>" class="btn btn-info btn-sm pull-right"> <i class="glyphicon glyphicon-arrow-left"> </i> <b>Volver</b></a></center></legend>
+    </div>
     <div class="row">
         <form action="<?php echo site_url("/establecimientos/guardarHabitacion")?>" method="POST" name="form1" id="form1">
         <input type="hidden" name="id_establecimiento" value="<?php echo $establecimiento;?>"/>
         <table class="table table-bordered">
            <tr>
-               <th class="text-center">TIPO</th>
-               <th class="text-center">BAÑO</th>
-               <th class="text-center">TELEVISION</th>
-               <th class="text-center">NEVERA</th>
-               <th class="text-center">AIRE</th>
-               <th class="text-center">TELEFONO</th>
-               <th class="text-center">SECADORA</th>
-               <th class="text-center">MÚSICA</th>
-               <th class="text-center"></th>
+               <th class="text-center alert-info">TIPO</th>
+               <th class="text-center alert-info">BAÑO</th>
+               <th class="text-center alert-info">TELEVISION</th>
+               <th class="text-center alert-info">NEVERA</th>
+               <th class="text-center alert-info">AIRE</th>
+               <th class="text-center alert-info">TELEFONO</th>
+               <th class="text-center alert-info">SECADORA</th>
+               <th class="text-center alert-info">MÚSICA</th>
+               <th class="text-center alert-info"></th>
                
            </tr>
             <tr>
@@ -147,35 +149,15 @@
         	</tr>
         </table>
         </form>
+        
+        <div id="contenedorTabla">
+        	
+        	
+        </div>
+        
+        
       </div>
-         
-    <?php if($cama_habitacion){?>
-    	<table class="table table-hover table-striped">
-    		<tr>
-    			<th class="text-center">Tipo</th>
-    			<th class="text-center">Cantidad</th>
-    			<th class="text-center"></th>
-    		</tr>
-    		<?php  foreach($cama_habitacion->result() as $cama_habi) {?>
-    		<tr>
-    			<td class="text-center"><?php echo $cama_habi->TIPO_CAM;?></td>
-<!--    			<td class="text-center"><?php if($habi->BANIOPRIVADO_HAB == 1){echo "<i class='glyphicon glyphicon-ok'>";}else{echo "<i class='glyphicon glyphicon-remove'>";}?></td>-->
-   				<td class="text-center"><?php echo $cama_habi->NUMERO;?></td>
-   				<td class="text-center"><a href="<?php echo site_url('/establecimientos/eliminarCamaHabitacion'). "/". $cama_habi->ID_CAM."/".$cama_habi->ID_HAB."/".$establecimiento;?>" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>
-    			
-    		</tr>
-    	<?php }
-				echo  "</table>";
-			}else{
-			?>
-			<div class="alert alert-danger text-center" >
-                <b> <i class="glyphicon glyphicon-remove"> </i> No se encontraron registros</b>
-            </div>
-            <br>
-            <br>
-            <br>
-            <?php }?>
-   
+    
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
       </div>
@@ -193,8 +175,49 @@
 		$("#formModal").validate().resetForm();
 		$("input").removeClass('error');
 		$("select").removeClass('error');
+		var id = $('#id_hab').val();
+		
+			
+		$.ajax({
+			data: {
+				id_hab: id
+				
+			},
+			type: 'POST',
+			url: "<?php echo site_url("/establecimientos/consultarCamas");?>"
+			
+			
+	})
+		.success(function(data,textStatus,jqXHR){
+			var resultado = JSON.parse(data);
+			
+			if(resultado.length>0){
+			var tabla = "<table class='table table-striped'>";
+			tabla += "<tr>";
+			tabla += "<th class = 'text-center'>TIPO</th>";
+			tabla += "<th class = 'text-center'>CANTIDAD</th>";
+			tabla += "<th class = 'text-center'></th>";
+			tabla += "</tr>";
+			for(i=0; i < resultado.length; i++)
+				{
+					tabla += "<tr>";
+					tabla += "<td class = 'text-center'>"+resultado[i].TIPO_CAM+"</td>";
+					tabla += "<td class = 'text-center'>"+resultado[i].NUMERO+"</td>";
+					tabla += "<td class = 'text-center'><a class='btn btn-danger' href='<?php echo site_url('/establecimientos/eliminarCamaHabitacion/'.'/'.$establecimiento);?>/"+resultado[i].ID_CH+"'> <i class='glyphicon glyphicon-trash'> </i></a></td>";
+					tabla += "</tr>";
+				}
+			
+			tabla += "</table>";
+			}else{
+				var tabla="<div class='alert alert-danger'> <i class='glyphicon glyphicon-remove'> </i><b>No se encontraron camas registradas en esta habitación </b>  </div> ";
+			}
+				$("#contenedorTabla").html(tabla);
+			//alert(resultado[1].TIPO_CAM);
+	
+	});
 		
 	}
+	
 	$("#formModal").validate({
 		rules:{
 			id_cam:{

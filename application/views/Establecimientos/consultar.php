@@ -25,9 +25,10 @@
                 <th class="alert-success">Nombre</th>
                 <th class="alert-success">Telefono</th>
                 <th class="alert-success">Actividad</th>
-                <th class="alert-success">Tecnología</th>
-                <th class="alert-success">Habitaciones</th>
-                <th class="alert-success">Servicios</th>
+                
+                <th class="alert-success">Información</th>
+                
+                
             </tr>
 
           <?php   foreach($establecimientos->result() as $establecimiento){ ?>
@@ -38,20 +39,25 @@
                  <td><?php echo $establecimiento->NOMBRE_EST; ?></td>
                  <td><?php echo $establecimiento->TELEFONO_EST; ?></td>
                  <td><?php echo $establecimiento->NOMBRE_ACT; ?></td>
-                 <td class="text-center">
-                    <a href="<?php echo site_url("/establecimientos/tecnologia/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-warning"><i class="glyphicon glyphicon-phone-alt"></i></a> 
-                 </td>
-                  <td class="text-center">
-                 <?php if($establecimiento->NOMBRE_ACT == "Alojamiento"){?>
                  
-                    <a href="<?php echo site_url("/establecimientos/habitaciones/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-bed"></i></a> 
-                 
-                 <?php } else{?>
-                 <button disabled class="btn btn-danger"><i class="glyphicon glyphicon-bed"></i></button> 
-                 <?php } ?>
-                 </td>
-                 <td class="text-center">
-                    <a href="" class="btn btn-primary"><i class="glyphicon glyphicon-cutlery"></i></a> 
+                  
+                
+                 <td>
+                 	<div class="dropdown">
+  <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Seleccione
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li> <a href="<?php echo site_url("/establecimientos/tecnologia/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-warning"><i class="glyphicon glyphicon-phone-alt"></i> Tecnología</a></li>
+    <?php if($establecimiento->NOMBRE_ACT == "Alojamiento"){?>
+    <li><a href="<?php echo site_url("/establecimientos/habitaciones/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-bed"></i> Habitaciones</a> </li>
+    <?php } ?>
+    <li><a href="<?php echo site_url("/establecimientos/servicios/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-primary"><i class="glyphicon glyphicon-cutlery"></i> Servicios</a> </li>
+    
+    
+  </ul>
+</div>
                  </td>
                 
              </tr>
@@ -108,18 +114,6 @@
 
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
   <?php  
 

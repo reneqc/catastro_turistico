@@ -12,7 +12,7 @@ class Establecimiento_habitacion extends CI_Model{
     function consultarPorEstablecimiento($id_est){
         $this->db->join("habitacion","habitacion.id_hab=establecimiento_habitacion.id_hab");
         $this->db->join("establecimiento","establecimiento.id_est=establecimiento_habitacion.id_est");
-        $query = $this->db->get_where("establecimiento_habitacion",array('establecimiento_habitacion.id_est'=>$id_est));
+        $query = $this->db->get_where("establecimiento_habitacion",array('establecimiento_habitacion.id_est'=>$id_est));		
         if($query -> num_rows() > 0)
         {
             return $query;
