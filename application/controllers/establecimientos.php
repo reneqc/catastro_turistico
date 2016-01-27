@@ -15,6 +15,10 @@ class Establecimientos  extends CI_Controller {
     $this->load->model('establecimiento_maquina');
 	$this->load->model('establecimiento_habitacion');
 	$this->load->model('cama_habitacion');
+    $this->load->model('producto');
+    $this->load->model('establecimiento_producto');
+    $this->load->model('especialidad');
+    $this->load->model('establecimiento_especialidad');
 	
    }  
     public function index(){
@@ -323,9 +327,118 @@ class Establecimientos  extends CI_Controller {
         //$this->habitacion->eliminarHabitacion($id_hab);
         $this -> session -> set_flashdata('mensaje','Cama Eliminada Exitosamente!');
         redirect('/establecimientos/habitaciones/'.$id_est);
-		
-            
+
     }
+    
+    
+    /* Funcion para renderizar la vista de gestion de productos
+    *  cuando un establecimiento es de tipo agencia de viajes
+    *  Autor: Rene Q
+    */
+    public function productos($establecimiento){
+        
+         if($this->session->userdata('username'))
+        {          
+             $data['establecimiento'] = $establecimiento;
+             $data['productos'] = $this->producto->consultarProductos();            
+             $data['productos2']= $this->establecimiento_producto->consultarPorEstablecimiento($establecimiento);
+             $data['numeroNacionales']= $this->establecimiento_producto->contarNacionales($establecimiento);
+
+             $data['numeroInternacionales']= $this->establecimiento_producto->contarInternacionales($establecimiento);
+
+             
+             
+             
+             $this->load->view('encabezado');
+             $this->load->view('/establecimientos/menuLateral');
+             $this->load->view('/establecimientos/productos',$data);
+             $this->load->view('pie');
+        }else{
+         redirect("/usuarios/login");   
+        }   
+    }
+    
+    
+     /* Funcion para obtener los datos enviados del formulario de la vista productos
+     * Envia un array al modelo para guardar los datos
+     *  Autor: Rene Q
+     */    
+    public function guardarProducto(){                
+        $data=array(
+            "id_est" => $this->input->post('id_est'),
+            "descripcion_ep" => $this->input->post('descripcion_ep'),
+            "id_prod" => $this->input->post('id_prod')
+        );
+        
+        $resultado=$this->establecimiento_producto->consultarExistencia($data['id_prod'],$data['id_est']);
+        if($resultado){
+              $this->establecimiento_producto->actualizarExistencia($resultado->ID_EP,$data);
+             $this -> session -> set_flashdata('mensaje','Producto Actualizado Exitosamente!');
+        }else{
+             $this->establecimiento_producto->grabarEstablecimientoProducto($data);
+            $this -> session -> set_flashdata('mensaje','Producto Guardado Exitosamente!');
+        }
+        redirect('/establecimientos/productos/'.$data['id_est']);         
+    }
+    
+    
+      /* Funcion para obtener los productos asociados a un establecimiento
+      * de tipo agencia de viajes
+     *  Autor: Rene Q
+     */    
+    public function eliminarProducto($id_est,$id_ep){            
+       $this->establecimiento_producto->eliminarProducto($id_ep);
+         $this -> session -> set_flashdata('mensaje','Producto Eliminado Exitosamente!');
+        redirect('/establecimientos/productos/'.$id_est);         
+    }
+    
+       /* Funcion para renderizar la vista de gestion de especialidades
+     *si el estblecimiento es de alimentos y bebidas
+     *  Autor: Rene Q
+     */    
+    public function especialidad($establecimiento){
+        if($this->session->userdata('username'))
+        {                              
+             $data['establecimiento']=$establecimiento;
+             $data['especialidad']=$this->establecimiento_especialidad->consultarEspecialidadAsignada($establecimiento);
+             $data['especialidades']=$this->especialidad->consultarEspecialidades();
+             $this->load->view('encabezado');
+             $this->load->view('/establecimientos/menuLateral');
+             $this->load->view('/establecimientos/especialidad',$data);
+             $this->load->view('pie'); 
+        
+        }else{
+         redirect("/usuarios/login");   
+        }   
+    }
+    
+          /* Guardar o actualizar la especialidad de un 
+          *establecimiento que tenga actividades *
+          relacionadas con alimentacion
+     *  Autor: Rene Q
+     */ 
+    public function guardarEspecialidad(){
+         $data=array(
+            "id_est" => $this->input->post('id_est'),
+            "id_espe" => $this->input->post('id_espe'),            
+        );
+        
+        $resultado=$this->establecimiento_especialidad->consultarExistencia($data['id_est']);
+        if($resultado){
+              $this->establecimiento_especialidad->actualizarExistencia($resultado->ID_EES,$data);
+             $this -> session -> set_flashdata('mensaje','Especialidad Actualizada Exitosamente!');
+        }else{
+             $this->establecimiento_especialidad->grabarEstablecimientoEspecialidad($data);
+            $this -> session -> set_flashdata('mensaje','Especialidad Guardada Exitosamente!');
+        }
+        redirect('/establecimientos/especialidad/'.$data['id_est']);  
+        
+    }
+    
+  
+   
+    
+    
     
 }
 ?>

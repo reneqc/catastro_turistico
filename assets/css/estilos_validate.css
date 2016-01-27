@@ -33,7 +33,7 @@ label.error{
 	    border-width: 10px;
 	}
 	
-input.error, select.error, textarea.error{
+input.error, select.error, textarea.error,div.error{
 	 border: 2px solid #a94442;
     border-radius: 7px;
 }
