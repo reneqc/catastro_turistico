@@ -70,7 +70,7 @@
 
 <div class="col-md-6">
    <div class="row">       
-        <form action="<?php echo site_url('/establecimientos/guardarEstablecimientoMaquina');?>" method="POST" id="form3">
+        <form action="<?php echo site_url('/establecimientos/guardarEstablecimientoTransporte');?>" method="POST" id="form3">
         <input type="hidden" name="id_est" id="id_est" value="<?php echo $establecimiento;?>">
 
         

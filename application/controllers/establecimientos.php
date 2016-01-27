@@ -10,11 +10,15 @@ class Establecimientos  extends CI_Controller {
 	$this->load->model('habitacion');
 	$this->load->model('cama');
 	$this->load->model('servicio');
+	$this->load->model('transporte');
+	$this->load->model('complementario');
     $this->load->model('establecimiento_equipo');
 	$this->load->model('establecimiento_servicio');
     $this->load->model('establecimiento_maquina');
 	$this->load->model('establecimiento_habitacion');
+	$this->load->model('establecimiento_transporte');
 	$this->load->model('cama_habitacion');
+	$this->load->model('establecimiento_complementaria');
 	
    }  
     public function index(){
@@ -326,6 +330,75 @@ class Establecimientos  extends CI_Controller {
 		
             
     }
+	//Transporte
+	public function transporte($establecimiento){
+		if($this->session->userdata('username'))
+		{
+			$data['transporte'] = $this->transporte->consultaTransporte();
+			$data['establecimiento'] = $establecimiento;
+			$data['transportes'] = $this->establecimiento_transporte->consultarEstablecimientoTransporte($establecimiento);
+			$this->load->view('encabezado');
+			$this->load->view('/establecimientos/menuLateral');
+			$this->load->view('/establecimientos/transportes',$data);
+			$this->load->view('pie');
+		}else{
+			redirect("usuarios/login");			
+		}
+		
+	}
+	public function guardarEstablecimientoTransporte(){
+		
+        $data = array(
+            "id_trans" => $this->input->post("id_trans"),
+            "id_est" => $this->input->post("id_est"),
+            "unidades_et" => $this->input->post("unidades_et")
+        );
+        
+		$consulta = $this->establecimiento_transporte->consultarExistencia($data['id_trans'],$data['id_est']);
+		if($consulta){
+			$this -> establecimiento_transporte->actualizarExistencia($consulta->ID_ET,$data);
+			$this -> session -> set_flashdata('mensaje','Transporte Actualizado Exitosamente!');
+			
+		}else{
+			$this->establecimiento_transporte->grabarEstablecimientoTransporte($data);	
+			$this -> session -> set_flashdata('mensaje','Transporte Guardado Exitosamente!');
+		}
+        
+        redirect('/establecimientos/transporte/'.$data['id_est']);
+
+        
+    }
+	    public function eliminarEstablecimientoTransporte($id_et,$id_est){
+        $this->establecimiento_transporte->eliminarTransporte($id_et);
+        $this -> session -> set_flashdata('mensaje','Transporte Eliminado Exitosamente!');
+        redirect('/establecimientos/transporte/'.$id_est);
+            
+    }
+//Actividades Complementarias
+	public function complementarias($establecimiento){
+		if($this->session->userdata['username'])
+		{
+			$data['complementario'] = $this->complementario->consultaComplementario();
+			$data['establecimiento']=$establecimiento;
+			$this->load->view('encabezado');
+			$this->load->view('establecimientos/menuLateral');
+			$this->load->view('establecimientos/complementaria',$data);
+			$this->load->view('pie');
+		}else
+		{
+			redirect("usuarios/login");
+		}
+	}
+	public function guardarComplementaria(){
+		$data = array(
+			"id_est" => $this->input->post("id_est"),
+			"id_comple" => $this->input->post("id_comple")
+		);
+	
+		$this->establecimiento_complementaria->grabarComplementaria($data);
+		$this->session->set_flashdata('mensaje','Servicio Complementario Guardado Exitosamente');
+		redirect('/establecimientos/complementarias/'.$data['id_est']);
+	}
     
 }
 ?>

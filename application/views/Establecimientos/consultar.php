@@ -51,10 +51,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
     <li> <a href="<?php echo site_url("/establecimientos/tecnologia/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-warning"><i class="glyphicon glyphicon-phone-alt"></i> Tecnología</a></li>
     <?php if($establecimiento->NOMBRE_ACT == "Alojamiento"){?>
-    <li><a href="<?php echo site_url("/establecimientos/habitaciones/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-bed"></i> Habitaciones</a> </li>
+    <li><a href="<?php echo site_url("/establecimientos/habitaciones/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-home"></i> Habitaciones</a> </li>
     <?php } ?>
     <li><a href="<?php echo site_url("/establecimientos/servicios/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-primary"><i class="glyphicon glyphicon-cutlery"></i> Servicios</a> </li>
-    
+<li> <a href="<?php echo site_url("/establecimientos/transporte/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-warning"><i class="glyphicon glyphicon-road"></i> Transporte</a></li>
+<li> <a href="<?php echo site_url("/establecimientos/complementarias/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-info"><i class="glyphicon glyphicon-th-list"></i> Servicios Complementarios</a></li>    
     
   </ul>
 </div>
