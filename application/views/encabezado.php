@@ -8,6 +8,7 @@
     <script src="<?php echo base_url("assets/js/bootstrap.js"); ?>" type="text/javascript">  </script>  
     <script src="<?php echo base_url("assets/js/jquery.validate.js"); ?>" type="text/javascript">  </script>        
     <script src="<?php echo base_url("assets/js/funciones.js"); ?>" type="text/javascript">  </script>        
+    <script src="<?php echo base_url("assets/js/excellentexport.js"); ?>" type="text/javascript">  </script>        
     <script src="<?php echo base_url("assets/js/validaciones_adicionales.js"); ?>" type="text/javascript">  </script>        
     <script src="<?php echo base_url("assets/js/validaciones_adicionales1.js"); ?>" type="text/javascript">  </script>        
     <link href="<?php echo base_url("assets/css/stylish-portfolio.css"); ?>"  rel="stylesheet">  

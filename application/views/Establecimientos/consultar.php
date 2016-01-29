@@ -14,21 +14,18 @@
 </form>
 <br>
 
-<?php   if ($establecimientos){  ?>
+<?php  if ($establecimientos){  ?>
         
     
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" id="tblEstablecimientos">
             
             <tr>
                 <th class="alert-success">Registro</th>
                 <th class="alert-success">Fecha</th>
                 <th class="alert-success">Nombre</th>
                 <th class="alert-success">Telefono</th>
-                <th class="alert-success">Actividad</th>
-                
+                <th class="alert-success">Actividad</th>                
                 <th class="alert-success">Información</th>
-                
-                
             </tr>
 
           <?php   foreach($establecimientos->result() as $establecimiento){ ?>
@@ -64,8 +61,8 @@
     <?php } ?>
     <li><a href="<?php echo site_url("/establecimientos/servicios/").'/'.$establecimiento->ID_EST; ?>"><i class="glyphicon glyphicon-cutlery"></i> Servicios</a> </li>
 <li> <a href="<?php echo site_url("/establecimientos/transporte/").'/'.$establecimiento->ID_EST; ?>"><i class="glyphicon glyphicon-road"></i> Transporte</a></li>
-<li> <a href="<?php echo site_url("/establecimientos/complementarias/").'/'.$establecimiento->ID_EST; ?>" ><i class="glyphicon glyphicon-th-list"></i> Servicios Complementarios</a></li>    
-    
+<li> <a href="<?php echo site_url("/establecimientos/complementarias/").'/'.$establecimiento->ID_EST; ?>" ><i class="glyphicon glyphicon-th-list"></i> Servicios Complementarios</a></li> 
+      <li> <a href="<?php echo site_url("/establecimientos/personal/").'/'.$establecimiento->ID_EST; ?>"><i class="glyphicon glyphicon-user"></i> Personal </a></li>       
   </ul>
 </div>
                  </td>
@@ -88,10 +85,6 @@
     </div>
     <br><br><br><br><br><br><br><br><br>
 <?php } //else ?>
-
-
-
-
 
 </div>
 
@@ -124,6 +117,11 @@
 
       </div>
     </div>
+    
+    
+
+   <a download="somedata.xls" href="#" onclick="return ExcellentExport.excel(this, 'tblEstablecimientos', 'Sheet Name Here');">Export to Excel</a>
+        
 
   <?php  
 

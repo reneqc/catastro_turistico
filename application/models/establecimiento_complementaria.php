@@ -11,10 +11,12 @@ class Establecimiento_complementaria extends CI_Model{
     function grabarEstablecimientoHabitacion($id_establecimiento,$id_habitacion){
             $this->db->insert("establecimiento_habitacion",array("id_est"=>$id_establecimiento,"id_hab"=>$id_habitacion));
     }
+    
+    
     function consultarPorEstablecimiento($id_est){
-        $this->db->join("habitacion","habitacion.id_hab=establecimiento_habitacion.id_hab");
-        $this->db->join("establecimiento","establecimiento.id_est=establecimiento_habitacion.id_est");
-        $query = $this->db->get_where("establecimiento_habitacion",array('establecimiento_habitacion.id_est'=>$id_est));		
+        $this->db->join("complementario","complementario.id_comple=establecimiento_complementario.id_comple");
+        $this->db->join("establecimiento","establecimiento.id_est=establecimiento_complementario.id_est");
+        $query = $this->db->get_where("establecimiento_complementario",array('establecimiento_complementario.id_est'=>$id_est));		
         if($query -> num_rows() > 0)
         {
             return $query;
@@ -22,7 +24,10 @@ class Establecimiento_complementaria extends CI_Model{
             return false;
         }     
     }
-    function eliminarEstablecimientoHabitacion($id_eh){
-		$this->db->delete('establecimiento_habitacion',array("id_eh"=>$id_eh));
+    
+    function eliminarComplementarias($id_est){
+		$this->db->delete('establecimiento_complementario',array("id_est"=>$id_est));
 	}
+    
+
 }

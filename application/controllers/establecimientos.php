@@ -23,6 +23,10 @@ class Establecimientos  extends CI_Controller {
     $this->load->model('especialidad');
     $this->load->model('establecimiento_especialidad');
 	$this->load->model('establecimiento_complementaria');
+    $this->load->model('personal');
+    $this->load->model('establecimiento_personal');
+        
+        
 
    }  
     public function index(){
@@ -487,6 +491,8 @@ class Establecimientos  extends CI_Controller {
 		if($this->session->userdata['username'])
 		{
 			$data['complementario'] = $this->complementario->consultaComplementario();
+            
+            $data['complementariasEstablecimiento'] = $this->establecimiento_complementaria->consultarPorEstablecimiento($establecimiento);
 			$data['establecimiento']=$establecimiento;
 			$this->load->view('encabezado');
 			$this->load->view('establecimientos/menuLateral');
@@ -497,16 +503,68 @@ class Establecimientos  extends CI_Controller {
 			redirect("usuarios/login");
 		}
 	}
-	public function guardarComplementaria(){
-		$data = array(
+    
+	public function guardarComplementaria(){        
+        $listado_id= $this->input->post("comple");  
+        $this->establecimiento_complementaria->eliminarComplementarias($this->input->post("id_est"));
+        $array=explode(",",$listado_id);        
+        
+        for($i=0;$i<sizeof($array);$i++){          
+            $data = array(
 			"id_est" => $this->input->post("id_est"),
-			"id_comple" => $this->input->post("id_comple")
-		);
-	
-		$this->establecimiento_complementaria->grabarComplementaria($data);
+			"id_comple" => $array[$i]
+		  );        
+         $this->establecimiento_complementaria->grabarComplementaria($data);            
+       }		
 		$this->session->set_flashdata('mensaje','Servicio Complementario Guardado Exitosamente');
 		redirect('/establecimientos/complementarias/'.$data['id_est']);
 	}
+    
+    
+    
+    public function personal($establecimiento){
+        
+            $data['establecimiento']=$establecimiento;
+            $data['cargos']=$this->personal->consultaPersonal();
+            $data['personal']=$this->establecimiento_personal->consultarPorEstablecimiento($establecimiento);
+        	$this->load->view('encabezado');
+			$this->load->view('establecimientos/menuLateral');
+			$this->load->view('establecimientos/personal',$data);
+			$this->load->view('pie');
+        
+    }
+    
+    
+    public function guardarPersonal(){      
+        
+        $data = array(
+            "id_per"=>$this->input->post("id_per"),
+            "hombres_eper"=>$this->input->post("hombres_eper"),
+			"mujeres_eper"=>$this->input->post("mujeres_eper"),			
+			"id_est"=>$this->input->post("id_est")
+        );
+		$consulta = $this->establecimiento_personal->consultarExistencia($data['id_per'],$data['id_est']);
+		if($consulta){
+			$this -> establecimiento_personal->actualizarExistencia($consulta->ID_EPER,$data);
+			$this -> session -> set_flashdata('mensaje','Personal Actualizado Exitosamente!');
+		}else{
+			$this -> establecimiento_personal->grabarEstablecimientoPersonal($data);
+			$this -> session -> set_flashdata('mensaje','Personal Guardado Exitosamente!');	
+		}
+		
+		redirect('/establecimientos/personal/'.$data['id_est']);
+
+
+	}
+    
+    
+    public function eliminarPersonal($id_eper, $id_establecimiento){
+        $this->establecimiento_personal->eliminarpersonal($id_eper);        
+        $this -> session ->set_flashdata('mensaje','Personal eliminado exitosamente!');
+        redirect('/establecimientos/personal/'.$id_establecimiento);
+    }
+    
+    
     
   
    
