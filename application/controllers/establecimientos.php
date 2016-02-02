@@ -25,8 +25,7 @@ class Establecimientos  extends CI_Controller {
 	$this->load->model('establecimiento_complementaria');
     $this->load->model('personal');
     $this->load->model('establecimiento_personal');
-        
-        
+    $this->load->library('pdf'); 
 
    }  
     public function index(){
@@ -563,13 +562,98 @@ class Establecimientos  extends CI_Controller {
         $this -> session ->set_flashdata('mensaje','Personal eliminado exitosamente!');
         redirect('/establecimientos/personal/'.$id_establecimiento);
     }
+        
     
+  public function reporte($idEstablecimiento)
+  {
+
+    $this->pdf = new Pdf();
+    // Agregamos una página
+    $this->pdf->AddPage("L");
+    // Define el alias para el número de página que se imprimirá en el pie
+    $this->pdf->AliasNbPages();
+ 
+    /* Se define el titulo, márgenes izquierdo, derecho y
+     * el color de relleno predeterminado
+     */
+    $this->pdf->SetTitle(utf8_decode("Establecimiento Turístico"));
+    $this->pdf->SetLeftMargin(15);
+    $this->pdf->SetRightMargin(15);
+    $this->pdf->SetFillColor(200,200,200);
+ 
+    // Se define el formato de fuente: Arial, negritas, tamaño 9
+    $this->pdf->SetFont('Arial', 'B', 9);
+      
+      
+    //Consulta del Establecimiento
+      
+    $establecimiento=$this->establecimiento->consultarEstablecimiento($idEstablecimiento);
     
-    
-  
-   
-    
-    
+      $this->pdf->SetFillColor(255,255,255);
+      $this->pdf->Cell(250,7,utf8_decode('I. INFORMACIÓN GENERAL'),'',0,'L','1');
+      
+      $this->pdf->Ln(8);
+      
+    /*
+     * TITULOS DE COLUMNAS
+     *
+     * $this->pdf->Cell(Ancho, Alto,texto,borde,posición,alineación,relleno);
+     */
+ 
+    $this->pdf->Cell(25,7,utf8_decode('1. Identificación:'),'',0,'C','0');
+     $this->pdf->SetFont('Arial', '', 9);     
+    $this->pdf->Cell(300,7,utf8_decode('Registro No: ').$establecimiento->REGISTRO_EST,'',0,'C','0');
+      $this->pdf->Ln(7);
+      
+       $this->pdf->Cell(25,7,utf8_decode('Fecha: ').$establecimiento->FECHA_EST,'',0,'C','0');
+      
+      
+       $this->pdf->Cell(119,7,utf8_decode('Latitud: ').$establecimiento->LATITUD_EST,'',0,'C','0');
+      
+      
+       $this->pdf->Cell(50,7,utf8_decode('Longitud: ').$establecimiento->LONGITUD_EST,'',0,'C','0');
+      
+       $this->pdf->Ln(7);
+      
+      
+       $this->pdf->Cell(52,7,utf8_decode('Nombre del Establecimiento: ').$establecimiento->NOMBRE_EST,'',0,'C','0');
+      
+      
+       $this->pdf->Cell(119,7,utf8_decode('R.U.C: ').$establecimiento->RUC_EST,'',0,'C','0');
+      
+      $this->pdf->Ln(7);
+      
+       
+       $this->pdf->Cell(17,7,utf8_decode('Provincia: ').$establecimiento->PROVINCIA_EST,'',0,'C','0');
+      
+       $this->pdf->Ln(7);
+      
+      
+       $this->pdf->Cell(100,7,utf8_decode('Cantón: ').$establecimiento->CANTON_EST,'',0,'C','0');
+      
+      
+       $this->pdf->Cell(119,7,utf8_decode('Parroquia: ').$establecimiento->PARROQUIA_EST,'',0,'C','0');
+            
+      
+      /*
+    foreach ($alumnos as $alumno) {
+      // se imprime el numero actual y despues se incrementa el valor de $x en uno
+      $this->pdf->Cell(15,5,$x++,'BL',0,'C',0);
+      // Se imprimen los datos de cada alumno
+      $this->pdf->Cell(25,5,$alumno->paterno,'B',0,'L',0);
+      $this->pdf->Cell(25,5,$alumno->materno,'B',0,'L',0);
+      $this->pdf->Cell(25,5,$alumno->nombre,'B',0,'L',0);
+      $this->pdf->Cell(40,5,$alumno->fec_nac,'B',0,'C',0);
+      $this->pdf->Cell(25,5,$alumno->grado,'B',0,'L',0);
+      $this->pdf->Cell(25,5,$alumno->grupo,'BR',0,'C',0);
+      //Se agrega un salto de linea
+      $this->pdf->Ln(5);
+    }
+    */
+
+    $this->pdf->Output("Establecimiento Turítico.pdf", 'I');
+  }
+
     
 }
 ?>

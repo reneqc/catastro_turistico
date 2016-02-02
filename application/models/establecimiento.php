@@ -15,8 +15,18 @@ class Establecimiento extends CI_Model{
             return $query;
         }else{
             return false;
-        }
-            
+        }            
+    }
+    
+    
+     function consultarEstablecimiento($idEstablecimiento){
+        $query = $this -> db -> get_where("establecimiento",array("id_est"=>$idEstablecimiento));
+        if($query -> num_rows() > 0)
+        {
+            return $query->row();
+        }else{
+            return false;
+        }            
     }
     
     function consultarUltimoId(){

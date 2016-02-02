@@ -26,6 +26,7 @@
                 <th class="alert-success">Telefono</th>
                 <th class="alert-success">Actividad</th>                
                 <th class="alert-success">Información</th>
+                <th class="alert-success">Imprimir</th>
             </tr>
 
           <?php   foreach($establecimientos->result() as $establecimiento){ ?>
@@ -66,7 +67,10 @@
   </ul>
 </div>
                  </td>
-                
+                 
+                 <td>                     
+                     <a href="<?php echo site_url("/establecimientos/reporte/").'/'.$establecimiento->ID_EST; ?>" class="btn btn-success"><i class="glyphicon glyphicon-print"></i> </a>
+                 </td>
              </tr>
 
           <?php  } //foreach ?>
